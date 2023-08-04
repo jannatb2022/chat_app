@@ -9,10 +9,13 @@ app.use(express.json());
 
 // routes_____
 
-const authRoute = require("./routes/Auth")
+const authRoute = require("./routes/Auth");
+const messageRoute = require("./routes/Message")
+
 
 
 app.use("/api/auth", authRoute);
+app.use("./api/", messageRoute)
 
 mongoose.connect(process.env.mongo_url, {
     useNewUrlParser: true,

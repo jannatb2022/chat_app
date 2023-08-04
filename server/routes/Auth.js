@@ -1,28 +1,56 @@
 const router = require("express").Router();
-const User = require("../models/User");
+const Users = require("../models/User");
 const bcrypt = require("bcrypt");
 
-router.post("/register", async (req, res) => {
+router.post("/register", async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
-    const usernameCheck = await User.findOne({ username });
+    const usernameCheck = await Users.findOne({ username });
     if (usernameCheck)
       return res.json({ msg: "username already used", status: false });
 
-    const emailCheck = await User.findOne({ email });
+    const emailCheck = await Users.findOne({ email });
     if(emailCheck)
         return res.json({ msg: "Email already used", status: false});
 
     const hashpassword = await bcrypt.hash(password, 10);
-    const newUser = await new User({
+    const newUser = await  Users.create({
         username: username,
         email: email,
         password: hashpassword
     })
-    const user = newUser.save();
-    return res.status(200).json(user);    
+    
+    return res.json({status: true, newUser});    
   } catch (error) {
-    res.status(500).json(error)
+    next(error)
+  }
+});
+
+router.post("/login", async(req, res, next)=>{
+
+  try {
+    const {username, password} = req.body;
+    const user = await Users.findOne({username});
+    if(!user)
+      return res.json({msg: "Incorrect Username or Password", status: false});
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if(!isPasswordValid)
+      return res.json({msg: "Incorrect Username or Password", status: false});
+
+    return res.json({status: true, user})
+  } catch (error) {
+    next(error)
+  }
+  
+});
+
+router.get("/", async(req, res, next)=>{
+  const query = req.query.new;
+  try {
+    const users = query ? await Users.find().limit(10) : await Users.find();
+    return res.json({status: true, users});
+  } catch (error) {
+    next(error);
   }
 });
 
