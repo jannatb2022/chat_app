@@ -57,7 +57,7 @@ export default function Register ()  {
     try {
       if (handleValidation()) {
         const { email, username, password } = values;
-        const { data } =await axios.post("register", { email, username, password });
+        const { data } =await axios.post("/auth/register", { email, username, password });
 
         if (data.status === false) {
           toast.error(data.msg, toastOptions);
