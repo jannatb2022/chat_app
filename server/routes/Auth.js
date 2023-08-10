@@ -44,10 +44,10 @@ router.post("/login", async(req, res, next)=>{
   
 });
 
-router.get("/", async(req, res, next)=>{
-  const query = req.query.new;
+router.get("/allusers/:id", async(req, res, next)=>{
+  
   try {
-    const users = query ? await Users.find().limit(10) : await Users.find();
+    const users =  await Users.find({_id: { $ne: req.params.id}}).select(["email", "username", "avatarImage", "_id"]);
     return res.json({status: true, users});
   } catch (error) {
     next(error);
