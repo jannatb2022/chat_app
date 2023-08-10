@@ -45,7 +45,7 @@ const Login = () => {
 
     if(handleValidation()){
         const { username, password} = values;
-        const { data } = await axios.post("/login", {username, password});
+        const { data } = await axios.post("/auth/login", {username, password});
 
         if(data.status === false){
             toast.error(data.msg, toastOptions);
@@ -53,7 +53,7 @@ const Login = () => {
         }
         if(data.status === true){
            localStorage.setItem(process.env.REACT_APP_LOCALHOST_KEY, JSON.stringify(data.user));
-
+          console.log('login', data.user);
            navigate("/")
         }
     }

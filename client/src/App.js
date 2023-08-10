@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import Chat from "./pages/Chat";
 
 function App() {
-  const storage = localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY);
+  const storage =JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) ;
   console.log("st", storage);
   return (
     <Routes>

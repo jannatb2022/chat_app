@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 const Chat = () => {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(undefined);
+  const [currentUser, setCurrentUser] = useState('');
   const [currentchat, setCurrentChat] = useState(undefined);
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
-    async function fdata() {
+    async function f1data() {
       if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
         navigate("/login");
       } else {
@@ -20,19 +20,21 @@ const Chat = () => {
         );
       }
     }
-    fdata();
+    f1data();
   }, []);
+  console.log("cu", currentUser);
 
   useEffect(() => {
-    async function fdata() {
+    async function f2data() {
       if (currentUser) {
-        const data = await axios.get(`/allusers/${currentUser._id}`);
+        const data = await axios.get(`/auth/allusers/64d47067f2aa47447a6e330b`);
+        console.log('cdata', data);
         setContacts(data.data);
       }
     };
-    fdata();
-  }, [currentUser]);
-  console.log('ct', contacts);
+    f2data();
+  }, []);
+  console.log("ct", contacts);
 
   return <div>Chat</div>;
 };
