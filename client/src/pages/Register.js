@@ -24,7 +24,7 @@ export default function Register() {
   });
 
   useEffect(() => {
-    if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    if (localStorage.getItem('chatuser')) {
       navigate("/");
     }
   }, []);
@@ -61,18 +61,19 @@ export default function Register() {
           username,
           password,
         });
-        console.log(data);
+        console.log('rdata',data);
         if (data.status === false) {
           toast.error(data.msg, toastOptions);
         }
         if (data.status === true) {
           localStorage.setItem(
-            process.env.REACT_APP_LOCALHOST_KEY,
-            JSON.stringify(data.user)
+            'chatuser', JSON.stringify(data.newUser)
+            
+          
             
           );
           navigate("/");
-          console.log('register', data.user);
+         
         }
       }
     } catch (error) {

@@ -18,8 +18,11 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    if (localStorage.getItem('chatuser')) {
+      console.log('true');
       navigate("/");
+
+      
     }
   }, []);
 
@@ -46,14 +49,16 @@ const Login = () => {
     if(handleValidation()){
         const { username, password} = values;
         const { data } = await axios.post("/auth/login", {username, password});
-
+        console.log('ldataa', data);
         if(data.status === false){
             toast.error(data.msg, toastOptions);
             
         }
         if(data.status === true){
-           localStorage.setItem(process.env.REACT_APP_LOCALHOST_KEY, JSON.stringify(data.user));
-          console.log('login', data.user);
+          localStorage.setItem(
+            'chatuser', JSON.stringify(data.user));
+           
+          console.log('login', data);
            navigate("/")
         }
     }
